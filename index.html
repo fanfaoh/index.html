@@ -1,6 +1,11 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Happy birthday </title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cormorant+Garamond:ital,wght@0,600;1,400;1,500&family=Great+Vibes&display=swap">
 <style>
 /* Layout: one rounded card centered on a dark plum page. Four scenes stack inside it
@@ -83,21 +88,13 @@ body{margin:0;background:var(--page);color:var(--page-ink);font-family:var(--ui)
 @media (max-aspect-ratio:11/10){.panel{width:100%;bottom:max(4%,calc(18px + env(safe-area-inset-bottom,0px)));text-align:center;background:none;padding-inline:5cqw}}
 
 /* controls */
-.namebar{position:absolute;z-index:8;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;
-  max-width:calc(100% - 128px);padding:6px 10px 6px 16px;border-radius:999px;background:rgba(255,255,255,.6);
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(143,77,102,.2);transition:opacity .4s}
-.stage.go .namebar{opacity:0;pointer-events:none}
-.namebar label{font:italic 500 16px/1 var(--serif);color:var(--plum);white-space:nowrap}
-.namebar input{min-width:0;width:min(220px,44cqw);border:0;border-bottom:1px solid rgba(143,77,102,.4);background:transparent;padding:6px 2px;
-  font:500 16px/1.2 var(--ui);color:#5a2540;border-radius:0}
-.namebar input::placeholder{color:#b58c9a}
-.namebar input:focus-visible{outline:none;border-bottom-color:var(--rose)}
 .replay{position:absolute;z-index:8;top:calc(14px + env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));width:44px;height:44px;border-radius:50%;
   border:1px solid rgba(143,77,102,.25);background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--plum);cursor:pointer;display:grid;place-items:center;padding:0}
 .replay:hover{background:rgba(255,255,255,.85)}
 .replay:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style>
-
+</head>
+<body>
 <main class="wrap">
   <div id="stage" class="stage" tabindex="0" role="application" aria-label="Birthday card. Pull the bow back and release, or press Enter, to begin.">
     <section id="s1" class="scene s1">
@@ -145,7 +142,6 @@ body{margin:0;background:var(--page);color:var(--page-ink);font-family:var(--ui)
     </svg>
     <div id="fx"></div>
     <div id="grab" class="grab"></div>
-    <div class="namebar"><label for="nm">Who is it for?</label><input id="nm" maxlength="24" placeholder="Type a name" autocomplete="off" enterkeyhint="done"></div>
     <button id="again" class="replay" type="button" aria-label="Replay"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
     <div id="ball" class="orb" hidden></div>
     <div id="barT" class="bar-t"></div><div id="barB" class="bar-b"></div>
@@ -158,7 +154,7 @@ body{margin:0;background:var(--page);color:var(--page-ink);font-family:var(--ui)
 const $=s=>document.querySelector(s);
 const stage=$('#stage'),s1=$('#s1'),s2=$('#s2'),s3=$('#s3'),sk=$('#sk'),fx=$('#fx'),ball=$('#ball'),flash=$('#flash'),
   grab=$('#grab'),heartEl=$('#heartSvg'),glow=$('#glow'),bowG=$('#bow'),strEl=$('#str'),arrowG=$('#arrow'),
-  bars=[$('#barT'),$('#barB')],cv=$('#tree'),ctx=cv.getContext('2d'),sub=$('#sub'),nm=$('#nm');
+  bars=[$('#barT'),$('#barB')],cv=$('#tree'),ctx=cv.getContext('2d'),sub=$('#sub');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let W=0,H=0,S=1,B={x:0,y:0},Hc={x:0,y:0},ang=0,dir={x:1,y:0},run=0,phase='idle',p=0,drag=null,raf=0;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -464,34 +460,27 @@ grab.addEventListener('pointercancel',()=>{
   const p0=p;p=0;tween(160,k=>layout(p0*(1-k)));
 });
 stage.addEventListener('keydown',e=>{
-  if(e.target===nm)return;
   if(e.key==='Enter'||e.key===' '){e.preventDefault();autoShot()}
 });
 $('#again').addEventListener('click',reset);
+const NAME='Bishnu';
 function applyName(){
-  const v=nm.value.trim().replace(/\s+/g,' ');
   const line=$('.nameline'),n3=$('#nm3');
-  line.hidden=!v;n3.hidden=!v;
-  $('#nm2').textContent=v;n3.textContent=v;
-  stage.style.setProperty('--nr',Math.min(.6,9/Math.max(v.length,1)));
-  stage.style.setProperty('--len',Math.max(v.length,1));
+  line.hidden=false;n3.hidden=false;
+  $('#nm2').textContent=NAME;n3.textContent=NAME;
+  stage.style.setProperty('--nr',.6);
+  stage.style.setProperty('--len',NAME.length);
   sub.textContent='this one\'s for you';
-  try{
-    const hv=v.replace(/ /g,'-');
-    if(/^[A-Za-z0-9-]*$/.test(hv)&&hv!==location.hash.slice(1))history.replaceState(null,'',hv?'#'+hv:location.pathname+location.search);
-  }catch(e){}
 }
-nm.addEventListener('input',applyName);
 let rt=0;
 new ResizeObserver(()=>{
   clearTimeout(rt);
   rt=setTimeout(()=>{metrics();if(phase==='tree')startTree(run,performance.now()-treeT0)},120);
 }).observe(stage);
-try{const hv=decodeURIComponent(location.hash.slice(1)).replace(/-/g,' ').slice(0,24);if(hv)nm.value=hv}catch(e){}
 applyName();
 reset();
 })();
 
 </script>
-
-</body></html>
+</body>
+</html>
